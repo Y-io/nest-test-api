@@ -1,0 +1,16 @@
+type CommonResult {
+  """
+  状态码
+  """
+  code: Int
+  """
+  状态信息
+  """
+  message: String
+}
+
+scalar JSON
+"""
+为了识别 _id
+"""
+scalar ObjectID

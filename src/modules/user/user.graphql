@@ -1,0 +1,48 @@
+type Query {
+  findUser(pageNumber: Int, pageSize: Int, roleId: String): UsersRes
+  findUserById(id: String!): User
+  getUserInfo: User
+  adminLogin(
+    """
+    账号
+    """
+    username: String
+    """
+    密码
+    """
+    password: String
+  ): TokenInfo
+}
+
+type Mutation {
+  createAdmin(
+    """
+    账号
+    """
+    username: String!
+    """
+    密码
+    """
+    password: String!
+  ): CommonResult
+}
+
+type UsersRes {
+  count: Int
+  data: [User]
+}
+
+type User {
+  _id: ObjectID
+  username: String
+  status: String
+
+  recycle: Boolean
+  createdAt: String
+  updatedAt: String
+}
+
+type TokenInfo {
+  accessToken: String
+  expiresIn: Int
+}

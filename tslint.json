@@ -25,7 +25,8 @@
       "check-type"
     ],
     "align": false,
-    "no-unused-expression": false
+    "no-unused-expression": false,
+    "forin": false
   },
   "rulesDirectory": []
 }
