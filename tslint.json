@@ -26,7 +26,10 @@
     ],
     "align": false,
     "no-unused-expression": false,
-    "forin": false
+    "forin": false,
+    "array-type": [false],
+    "variable-name": [false],
+    "one-variable-per-declaration": [false]
   },
   "rulesDirectory": []
 }

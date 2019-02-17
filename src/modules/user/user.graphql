@@ -24,7 +24,7 @@ type Mutation {
     密码
     """
     password: String!
-  ): CommonResult
+  ): User
 }
 
 type UsersRes {

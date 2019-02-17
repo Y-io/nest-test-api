@@ -3,15 +3,14 @@ import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User, ITokenInfo } from './user.interface';
 import { HttpException } from '@nestjs/common';
-import { CommonResult } from 'src/common/interfaces';
-import { Roles } from 'src/common/decorators';
-import { RoleObj } from 'src/common/common.object';
+import { Roles } from 'src/core';
+import { RoleObj } from 'src/core';
 
 @Resolver()
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
   @Mutation()
-  @Roles(RoleObj.User)
+  @Roles(RoleObj.SuperAdmin, RoleObj.User)
   async createAdmin(
     @Args('username') username: string,
     @Args('password') password: string,
@@ -19,8 +18,8 @@ export class UserResolver {
     if (!username || !password)
       throw new HttpException('账号或者密码不能为空', 406);
 
-    await this.userService.createAdmin(username, password);
-    return { code: 200, message: '成功' };
+    const data = await this.userService.createAdmin(username, password);
+    return data;
   }
 
   // 管理员登录
@@ -28,7 +27,7 @@ export class UserResolver {
   async adminLogin(
     @Args('username') username: string,
     @Args('password') password: string,
-  ): Promise<ITokenInfo> {
+  ): Promise<any> {
     const data: ITokenInfo = await this.userService.createlogin({
       username,
       password,

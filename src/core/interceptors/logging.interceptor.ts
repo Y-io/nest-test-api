@@ -15,6 +15,7 @@ export class LoggingInterceptor implements NestInterceptor {
     call$: Observable<any>,
   ): Observable<any> {
     const now = Date.now();
+
     const req = context.switchToHttp().getRequest();
     if (req) {
       const method = req.method;
@@ -34,12 +35,12 @@ export class LoggingInterceptor implements NestInterceptor {
       const info = ctx.getInfo();
 
       return call$.pipe(
-        tap(() =>
+        tap(() => {
           Logger.log(
             `${info.parentType} "${info.fieldName}" ${Date.now() - now}ms`,
-            resolverName,
-          ),
-        ),
+            `${resolverName}`,
+          );
+        }),
       );
     }
   }

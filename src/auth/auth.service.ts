@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, HttpException } from '@nestjs/common';
 import { AuthenticationError } from 'apollo-server-core';
 import { UserService } from 'src/modules/user/user.service';
 // import { config } from 'dotenv';
@@ -12,14 +12,14 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  async validateUser(token) {
-    if (!token)
-      throw new AuthenticationError('请求头缺少授权参数：Authorization');
-
+  async validateUser(req) {
+    if (!req || !req.headers.authorization)
+      throw new HttpException('请求头缺少授权参数：Authorization', 403);
+    let token = req.headers.authorization;
     if (token.slice(0, 6) === 'Bearer') {
       token = token.slice(7);
     } else {
-      throw new AuthenticationError('授权代码前缀不正确: Bearer');
+      throw new HttpException('授权代码前缀不正确: Bearer', 403);
     }
 
     try {
@@ -28,14 +28,14 @@ export class AuthService {
       );
 
       const user: User = await this.userService.findUserById(decodedToken._id);
-      // console.log(user, '角色信息');
+
       return user;
     } catch (error) {
       if (error instanceof jwt.JsonWebTokenError) {
-        throw new AuthenticationError('授权代码错误');
+        throw new HttpException('授权代码错误', 403);
       }
       if (error instanceof jwt.TokenExpiredError) {
-        throw new AuthenticationError('授权代码已经过期');
+        throw new HttpException('授权代码已经过期', 403);
       }
     }
   }

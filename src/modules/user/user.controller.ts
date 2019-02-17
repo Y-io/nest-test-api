@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { Roles } from 'src/common/decorators';
+import { Roles } from 'src/core';
 
 @Controller()
 export class UserController {

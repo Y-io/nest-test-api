@@ -1,0 +1,67 @@
+type Query {
+  findCategory: CategoryAllRes
+  findCategoryById(id: String!): CategoryRes
+}
+
+type Mutation {
+  """
+  创建分类
+  """
+  createCategory(
+    """
+    名称
+    """
+    name: String!
+    """
+    父级id，为空则表示创建顶级分类
+    """
+    parentId: String
+    """
+    描述
+    """
+    description: String
+  ): Category
+}
+
+type CategoryAllRes {
+  code: Int
+  message: String
+  data: [Category]
+}
+
+type CategoryRes {
+  code: Int
+  message: String
+  data: Category
+}
+
+type Category {
+  """
+  id
+  """
+  _id: ObjectID
+  """
+  名称
+  """
+  name: String
+  """
+  父级
+  """
+  parent: Category
+  """
+  子级列表
+  """
+  children: [Category]
+  """
+  所有父级id
+  """
+  paths: [String]
+  """
+  创建时间
+  """
+  created: String
+  """
+  更新时间
+  """
+  updated: String
+}

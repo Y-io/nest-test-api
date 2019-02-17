@@ -8,7 +8,7 @@ import { UserService } from './user.service';
 import { AuthService } from 'src/auth/auth.service';
 import { Model } from 'mongoose';
 import { User } from './user.interface';
-import { RoleObj } from 'src/common/common.object';
+import { RoleObj } from 'src/core';
 import { UserController } from './user.controller';
 
 @Module({

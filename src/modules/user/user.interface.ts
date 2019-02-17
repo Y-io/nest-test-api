@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { IPagination, IResource } from 'src/common/interfaces';
+import { IPagination, IResource } from 'src/core';
 
 export interface User extends Document {
   username: string;

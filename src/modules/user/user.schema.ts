@@ -3,12 +3,8 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 // import { config } from 'dotenv';
 import { User, JwtPayload, ITokenInfo } from './user.interface';
-import {
-  RoleArr,
-  RoleObj,
-  StatusArr,
-  StatusObj,
-} from 'src/common/common.object';
+import { RoleArr, RoleObj, StatusArr, StatusObj } from 'src/core';
+import { schemaOptions } from '../base.schema';
 const { Schema } = mongoose;
 // config();
 // Normal: 正常
@@ -33,7 +29,7 @@ export const UserSchema = new Schema(
     // organizations: [{ type: Schema.Types.ObjectId, ref: 'Organization' }],
     recycle: { type: Boolean, default: false },
   },
-  { timestamps: true },
+  schemaOptions,
 );
 
 UserSchema.pre<User>('save', async function(next) {
