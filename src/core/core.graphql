@@ -13,4 +13,4 @@ scalar JSON
 """
 为了识别 _id
 """
-scalar ObjectID
+scalar ID

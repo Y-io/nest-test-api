@@ -14,7 +14,7 @@ export class UserService {
     });
     if (user) throw new HttpException('该用户已存在', 409);
 
-    user = new this.userModel({ username, password });
+    user = await this.userModel.create({ username, password });
 
     await user.save();
     return user;

@@ -39,7 +39,7 @@ type Category {
   """
   id
   """
-  _id: ObjectID
+  _id: ID
   """
   名称
   """

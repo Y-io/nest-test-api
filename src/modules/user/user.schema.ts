@@ -9,10 +9,13 @@ const { Schema } = mongoose;
 
 export const UserSchema = new Schema(
   {
-    username: { type: String, unique: true },
+    id: String,
+    name: String,
+    username: String,
     password: String,
     age: Number,
     email: String,
+    phone: Number,
     status: {
       type: String,
       default: StatusObj.Normal,
@@ -29,6 +32,10 @@ export const UserSchema = new Schema(
   },
   schemaOptions,
 );
+
+// 设置索引
+UserSchema.index({ username: 1 }, { unique: true });
+UserSchema.index({ email: 1 });
 
 UserSchema.pre<User>('save', async function(next) {
   if (!this.isModified('password')) return next();

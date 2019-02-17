@@ -33,7 +33,7 @@ type UsersRes {
 }
 
 type User {
-  _id: ObjectID
+  _id: ID
   username: String
   status: String
 
