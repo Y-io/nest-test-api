@@ -6,11 +6,11 @@ type Query {
     """
     账号
     """
-    username: String
+    username: String!
     """
     密码
     """
-    password: String
+    password: String!
   ): TokenInfo
 }
 

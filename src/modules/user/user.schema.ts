@@ -6,15 +6,13 @@ import { User, JwtPayload, ITokenInfo } from './user.interface';
 import { RoleArr, RoleObj, StatusArr, StatusObj } from 'src/core';
 import { schemaOptions } from '../base.schema';
 const { Schema } = mongoose;
-// config();
-// Normal: 正常
-// Examine: 审核
-// Banned: 禁止
 
 export const UserSchema = new Schema(
   {
     username: { type: String, unique: true },
     password: String,
+    age: Number,
+    email: String,
     status: {
       type: String,
       default: StatusObj.Normal,
@@ -25,9 +23,9 @@ export const UserSchema = new Schema(
       default: [RoleObj.User],
       enum: RoleArr,
     },
-    // posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-    // organizations: [{ type: Schema.Types.ObjectId, ref: 'Organization' }],
     recycle: { type: Boolean, default: false },
+    avatar: String,
+    posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   },
   schemaOptions,
 );

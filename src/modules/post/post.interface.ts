@@ -1,6 +1,5 @@
-import { Document } from 'mongoose';
+import { BaseInterface } from '../base.interface';
 
-export interface Post extends Document {
-  createdAt: Date;
-  updatedAt: Date;
+export interface Post extends BaseInterface {
+  title: string; // 标题
 }
