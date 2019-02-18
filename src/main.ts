@@ -21,15 +21,15 @@ async function bootstrap() {
   const rootDir = join(__dirname, '..');
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('api');
+
   // prefix 所有的静态文件路径添加前缀"/public", 需要使用“挂载”功能
   app.useStaticAssets(join(rootDir, 'public'), {
     prefix: '/public',
   });
 
   // 跨域
-  app.enableCors({
-    origin: ['http://localhost:3000'],
-  });
+  app.enableCors();
 
   // 防止跨站请求伪造
   // app.use(csurf({ cookie: true }));

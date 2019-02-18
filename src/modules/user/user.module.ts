@@ -24,10 +24,10 @@ export class UserModule implements OnModuleInit {
   }
 
   private async createSAdmin() {
-    let sadmin = await this.userModel.findOne({ username: 'sadmin' });
+    let sadmin = await this.userModel.findOne({ userName: 'sadmin' });
     if (!sadmin) {
       sadmin = await this.userModel.create({
-        username: 'sadmin',
+        userName: 'sadmin',
         password: '123456',
         role: RoleEnum.SuperAdmin,
       });

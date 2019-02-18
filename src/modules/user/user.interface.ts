@@ -5,7 +5,7 @@ import { Types } from 'mongoose';
 export interface User extends BaseInterface {
   name: string; // 真实姓名
   id: string; // 身份证号
-  username: string; // 用户名
+  userName: string; // 用户名
   password: string; // 密码
   age: number; // 年龄
   email: string; // 邮箱
@@ -22,17 +22,17 @@ export interface User extends BaseInterface {
 
 export interface JwtPayload {
   _id: Types.ObjectId;
-  username: string;
+  userName: string;
 }
 
 export interface ICreateUserInput {
-  username: string;
+  userName: string;
   password: string;
 }
 
 export interface ICreateLogin {
   mobile?: string;
-  username?: string;
+  userName?: string;
   password?: string;
 }
 

@@ -39,20 +39,20 @@ export class UserService extends BaseService<User> {
 
   // 创建登录
   async createlogin(loginInfo: ICreateLogin): Promise<ITokenInfo> {
-    const { username: loginName, mobile, password } = loginInfo;
+    const { userName: loginName, mobile, password } = loginInfo;
 
     if (!loginName && !mobile)
       throw new HttpException('账号或者手机至少有一样', 404);
 
     let user: User;
-    if (loginName) user = await this.userModel.findOne({ username: loginName });
+    if (loginName) user = await this.userModel.findOne({ userName: loginName });
     if (mobile) user = await this.userModel.findOne({ mobile });
 
     if (!user || !(await user.comparePassword(password)))
       throw new HttpException('账号或者密码错误', 404);
 
-    const { _id, username } = user;
-    return await user.createToken({ _id, username }, 1);
+    const { _id, userName } = user;
+    return await user.createToken({ _id, userName }, 1);
   }
 
   // 根据条件查询所有用户

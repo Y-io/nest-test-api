@@ -25,20 +25,20 @@ export class HttpErrorFilter implements ExceptionFilter {
       message:
         status !== HttpStatus.INTERNAL_SERVER_ERROR
           ? exception.message.error || exception.message || null
-          : 'Internal server error',
+          : '内部服务器错误',
     };
 
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       Logger.error(
         `${request.method} ${request.url}`,
         exception.stack,
-        'ExceptionFilter',
+        'ExceptionFilter: 异常过滤器',
       );
     } else {
       Logger.error(
         `${request.method} ${request.url}`,
         JSON.stringify(errorResponse),
-        'ExceptionFilter',
+        'ExceptionFilter: "异常过滤器"',
       );
     }
 

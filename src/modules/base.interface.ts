@@ -1,5 +1,11 @@
 import { Document, Types, ModelPopulateOptions } from 'mongoose';
 
+export interface CommonResult<T = any> {
+  code: number;
+  message: string;
+  data: T;
+}
+
 export interface BaseInterface extends Document {
   _id: Types.ObjectId; // mongodb id
   // id: Types.ObjectId; // mongodb id

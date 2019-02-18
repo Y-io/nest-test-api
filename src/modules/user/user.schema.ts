@@ -12,7 +12,7 @@ export const UserSchema = new Schema(
   {
     id: String,
     name: String,
-    username: String,
+    userName: String,
     password: String,
     age: Number,
     email: String,
@@ -35,7 +35,7 @@ export const UserSchema = new Schema(
 );
 
 // 设置索引
-UserSchema.index({ username: 1 }, { unique: true });
+UserSchema.index({ userName: 1 }, { unique: true });
 // UserSchema.index({ email: 1 });
 
 UserSchema.pre<User>('save', async function(next) {
