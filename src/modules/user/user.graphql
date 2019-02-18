@@ -1,5 +1,10 @@
 type Query {
-  findUser(pageNumber: Int, pageSize: Int, roleId: String): UsersRes
+  findUser(
+    pageNumber: Int
+    pageSize: Int
+    name: String
+    roles: [String!]!
+  ): Users
   findUserById(id: String!): User
   getUserInfo: User
   adminLogin(
@@ -24,25 +29,30 @@ type Mutation {
     密码
     """
     password: String!
+    """
+    密码
+    """
+    role: String!
   ): User
 }
 
-type UsersRes {
-  count: Int
-  data: [User]
+type Users {
+  total: Int
+  data: [User]!
+  limit: Int
 }
 
 type User {
   _id: ID
   username: String
   status: String
-
+  role: String
   recycle: Boolean
   createdAt: String
   updatedAt: String
 }
 
 type TokenInfo {
-  accessToken: String
+  accessToken: String!
   expiresIn: Int
 }

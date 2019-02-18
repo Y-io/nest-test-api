@@ -1,10 +1,11 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-// import { config } from 'dotenv';
+
 import { User, JwtPayload, ITokenInfo } from './user.interface';
-import { RoleArr, RoleObj, StatusArr, StatusObj } from 'src/core';
+import { RoleEnum, StatusEnum } from '../base.enum';
 import { schemaOptions } from '../base.schema';
+import { StatusArr, RoleArr } from '../base.object';
 const { Schema } = mongoose;
 
 export const UserSchema = new Schema(
@@ -18,12 +19,12 @@ export const UserSchema = new Schema(
     phone: Number,
     status: {
       type: String,
-      default: StatusObj.Normal,
+      default: StatusEnum.Normal,
       enum: StatusArr,
     },
-    roles: {
-      type: [String],
-      default: [RoleObj.User],
+    role: {
+      type: String,
+      default: RoleEnum.User,
       enum: RoleArr,
     },
     recycle: { type: Boolean, default: false },
@@ -35,7 +36,7 @@ export const UserSchema = new Schema(
 
 // 设置索引
 UserSchema.index({ username: 1 }, { unique: true });
-UserSchema.index({ email: 1 });
+// UserSchema.index({ email: 1 });
 
 UserSchema.pre<User>('save', async function(next) {
   if (!this.isModified('password')) return next();

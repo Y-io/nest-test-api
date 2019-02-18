@@ -6,14 +6,15 @@ import {
   ModelPopulateOptions,
 } from 'mongoose';
 import { WriteOpResult } from 'mongodb';
+import { IPageOptions } from './base.interface';
 
 /**
  * 分页器返回结果
  * @export
- * @interface Paginator
+ * @interface IPaginator
  * @template T
  */
-export interface Paginator<T> {
+export interface IPaginator<T> {
   data: T[];
   total: number;
   limit: number;
@@ -89,48 +90,41 @@ export abstract class BaseService<T extends Document> {
    * @param {*} conditions
    * @param {(any | null)} [projection]
    * @param {({
-   *         sort?: any;
-   *         limit?: number;
-   *         offset?: number;
-   *         page?: number;
+   *         sort?: any; // 排序
+   *         limit?: number;  // 每页数
+   *         offset?: number; // 偏移量
+   *         page?: number; // 页数
    *         populates?: ModelPopulateOptions[] | ModelPopulateOptions;
    *         [key: string]: any;
    *     })} [options]
-   * @returns {Promise<Paginator<T>>}
+   * @returns {Promise<IPaginator<T>>}
    * @memberof BaseService
    */
   async paginator(
     conditions: any,
     projection?: any | null,
-    options?: {
-      sort?: any;
-      limit?: number;
-      offset?: number;
-      page?: number;
-      populates?: ModelPopulateOptions[] | ModelPopulateOptions;
-      [key: string]: any;
-    },
-  ): Promise<Paginator<T>> {
-    const result: Paginator<T> = {
+    options?: IPageOptions,
+  ): Promise<IPaginator<T>> {
+    const result: IPaginator<T> = {
       data: [],
       total: 0,
-      limit: options.limit ? options.limit : 10,
+      limit: options.limit || 10,
       offset: 0,
       page: 1,
       pages: 0,
     };
     const { offset, page, option } = options;
-    if (offset !== undefined) {
+    if (!offset) {
       result.offset = options.offset;
       options.skip = offset;
-    } else if (page !== undefined) {
+    } else if (!page) {
       result.page = page;
       options.skip = (page - 1) * result.limit;
       result.pages = Math.ceil(result.total / result.limit) || 1;
     } else {
       options.skip = 0;
     }
-    result.data = await this.findAll(conditions, projection, option);
+    result.data = await this.findAll(conditions, projection, options);
     result.total = await this.count(conditions);
     return Promise.resolve(result);
   }
@@ -182,13 +176,17 @@ export abstract class BaseService<T extends Document> {
       [key: string]: any;
     },
   ): Promise<T | null> {
-    const { option, populates } = options;
-    const docsQuery = this._model.findById(
-      this.toObjectId(id),
-      projection,
-      option,
-    );
-    return this.populates<T>(docsQuery, populates);
+    let docsQuery;
+    if (options) {
+      const { lean, populates } = options;
+      docsQuery = this._model.findById(this.toObjectId(id), projection, {
+        lean,
+      });
+      return this.populates<T>(docsQuery, populates);
+    }
+
+    docsQuery = this._model.findById(this.toObjectId(id), projection);
+    return this.populates<T>(docsQuery);
   }
 
   /**
@@ -275,7 +273,7 @@ export abstract class BaseService<T extends Document> {
    * @returns {(Promise<T | T[] | null>)}
    * @memberof BaseService
    */
-  private populates<R>(docsQuery, populates): Promise<R | null> {
+  private populates<R>(docsQuery, populates?): Promise<R | null> {
     if (populates) {
       [].concat(populates).forEach(item => {
         docsQuery.populate(item);

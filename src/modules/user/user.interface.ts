@@ -1,4 +1,4 @@
-import { BaseInterface } from '../base.interface';
+import { BaseInterface, IPagination } from '../base.interface';
 import { Post } from '../post/post.interface';
 import { Types } from 'mongoose';
 
@@ -10,7 +10,7 @@ export interface User extends BaseInterface {
   age: number; // 年龄
   email: string; // 邮箱
   phone: number; // 电话
-  roles: [string]; // 角色列表
+  role: string; // 角色列表
   status: string; // 用户状态 Normal: 正常  Examine: 审核  Banned: 禁止
   recycle: boolean; // 是否进入回收站
   avatar: string; // 头像地址
@@ -30,10 +30,6 @@ export interface ICreateUserInput {
   password: string;
 }
 
-export interface IUser {
-  username?: string;
-}
-
 export interface ICreateLogin {
   mobile?: string;
   username?: string;
@@ -41,6 +37,11 @@ export interface ICreateLogin {
 }
 
 export interface ITokenInfo {
-  accessToken: string;
-  expiresIn: number;
+  accessToken: string; // token
+  expiresIn: number; // 过期时长
+}
+
+export interface IFindUser extends IPagination {
+  name: string; // 真实姓名
+  roles: string[]; // 权限
 }

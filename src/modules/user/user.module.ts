@@ -8,7 +8,7 @@ import { UserService } from './user.service';
 import { AuthService } from 'src/auth/auth.service';
 import { Model } from 'mongoose';
 import { User } from './user.interface';
-import { RoleObj } from 'src/core';
+import { RoleEnum } from '../base.enum';
 import { UserController } from './user.controller';
 
 @Module({
@@ -26,10 +26,10 @@ export class UserModule implements OnModuleInit {
   private async createSAdmin() {
     let sadmin = await this.userModel.findOne({ username: 'sadmin' });
     if (!sadmin) {
-      sadmin = new this.userModel({
+      sadmin = await this.userModel.create({
         username: 'sadmin',
         password: '123456',
-        roles: [RoleObj.SuperAdmin],
+        role: RoleEnum.SuperAdmin,
       });
 
       await sadmin.save();

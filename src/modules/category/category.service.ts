@@ -36,7 +36,6 @@ export class CategoryService {
         { _id: parentCategory._id },
         { $addToSet: { children: category._id } },
       );
-    console.log(category);
     return category;
   }
 

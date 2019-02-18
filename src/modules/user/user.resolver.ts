@@ -1,25 +1,26 @@
 import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 
 import { UserService } from './user.service';
-import { User, ITokenInfo } from './user.interface';
+import { User, ITokenInfo, IFindUser } from './user.interface';
 import { HttpException } from '@nestjs/common';
 import { Roles } from 'src/core';
-import { RoleObj } from 'src/core';
+import { IPaginator } from '../base.service';
+import { IPageOptions } from '../base.interface';
+import { RoleEnum } from '../base.enum';
 
 @Resolver()
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
+
+  // 创建管理员
   @Mutation()
-  @Roles(RoleObj.SuperAdmin, RoleObj.User)
+  @Roles(RoleEnum.SuperAdmin, RoleEnum.User)
   async createAdmin(
     @Args('username') username: string,
     @Args('password') password: string,
-  ) {
-    if (!username || !password)
-      throw new HttpException('账号或者密码不能为空', 406);
-
-    const data = await this.userService.createAdmin(username, password);
-    return data;
+    @Args('role') role: string,
+  ): Promise<User> {
+    return await this.userService.createAdmin(username, password, role);
   }
 
   // 管理员登录
@@ -27,29 +28,28 @@ export class UserResolver {
   async adminLogin(
     @Args('username') username: string,
     @Args('password') password: string,
-  ): Promise<any> {
-    const data: ITokenInfo = await this.userService.createlogin({
+  ): Promise<ITokenInfo> {
+    return await this.userService.createlogin({
       username,
       password,
     });
-
-    return data;
   }
 
-  // @Query()
-  // async getUserInfo(@Context() ctx): Promise<User> {
-  //   const data = await this.userService.findUserById(ctx.user._id);
-  //   return data;
-  // }
+  @Query()
+  async findUser(@Args() body: IFindUser): Promise<IPaginator<User>> {
+    return await this.userService.findUser(body);
+  }
 
-  // @Query()
-  // @Permission({
-  //   name: '查询单个用户',
-  //   identify: 'user:findUserById',
-  //   action: 'read',
-  // })
-  // async findUserById(@Args('id') id: string) {
-  //   const data = await this.userService.findUserById(id);
-  //   return { code: 200, message: '成功', data };
-  // }
+  // 获取用户详情
+  @Query()
+  async getUserInfo(@Context() ctx): Promise<User> {
+    return ctx.user;
+  }
+
+  @Query()
+  @Roles(RoleEnum.Admin)
+  async findUserById(@Args('id') id: string, @Context() ctx): Promise<User> {
+    if (id === ctx.user._id) return ctx.user;
+    return await this.userService.findUserById(id);
+  }
 }

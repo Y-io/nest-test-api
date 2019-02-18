@@ -3,14 +3,14 @@ import { CategoryService } from './category.service';
 
 import { Category } from './category.interface';
 import { Roles } from 'src/core';
-import { RoleObj } from 'src/core';
+import { RoleEnum } from '../base.enum';
 
 @Resolver()
 export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Mutation()
-  @Roles(RoleObj.SuperAdmin)
+  @Roles(RoleEnum.SuperAdmin)
   async createCategory(
     @Args('name') name: string,
     @Args('parentId') parentId: string,
