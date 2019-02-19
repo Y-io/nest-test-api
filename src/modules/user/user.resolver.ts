@@ -14,23 +14,23 @@ export class UserResolver {
 
   // 创建管理员
   @Mutation()
-  @Roles(RoleEnum.SuperAdmin, RoleEnum.User)
+  // @Roles(RoleEnum.SuperAdmin, RoleEnum.User)
   async createAdmin(
-    @Args('username') username: string,
+    @Args('userName') userName: string,
     @Args('password') password: string,
     @Args('role') role: string,
   ): Promise<User> {
-    return await this.userService.createAdmin(username, password, role);
+    return await this.userService.createAdmin(userName, password, role);
   }
 
   // 管理员登录
   @Query()
   async adminLogin(
-    @Args('username') username: string,
+    @Args('userName') userName: string,
     @Args('password') password: string,
   ): Promise<ITokenInfo> {
     return await this.userService.createlogin({
-      username,
+      userName,
       password,
     });
   }

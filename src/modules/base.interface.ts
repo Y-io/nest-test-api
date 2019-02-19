@@ -3,7 +3,13 @@ import { Document, Types, ModelPopulateOptions } from 'mongoose';
 export interface CommonResult<T = any> {
   code: number;
   message: string;
-  data: T;
+  data?: CommonResultList<T> | T;
+}
+
+interface CommonResultList<T> {
+  [key: string]: any;
+  total: number;
+  list: T[];
 }
 
 export interface BaseInterface extends Document {
@@ -14,8 +20,8 @@ export interface BaseInterface extends Document {
 }
 
 export interface IPagination {
-  pageNumber: number;
-  pageSize: number;
+  pageNumber?: number;
+  pageSize?: number;
 }
 
 export interface IPageOptions {

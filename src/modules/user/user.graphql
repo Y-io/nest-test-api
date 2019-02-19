@@ -1,17 +1,12 @@
 type Query {
-  findUser(
-    pageNumber: Int
-    pageSize: Int
-    name: String
-    roles: [String!]!
-  ): Users
+  findUser(pageNumber: Int, pageSize: Int, name: String, roles: String): Users
   findUserById(id: String!): User
   getUserInfo: User
   adminLogin(
     """
     账号
     """
-    username: String!
+    userName: String!
     """
     密码
     """
@@ -24,7 +19,7 @@ type Mutation {
     """
     账号
     """
-    username: String!
+    userName: String!
     """
     密码
     """
@@ -44,7 +39,7 @@ type Users {
 
 type User {
   _id: ID
-  username: String
+  userName: String
   status: String
   role: String
   recycle: Boolean

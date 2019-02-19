@@ -40,7 +40,7 @@ export class AuthGurad implements CanActivate {
       ctx.user = user;
     }
 
-    if (user.username === 'sadmin' || user.role === RoleEnum.SuperAdmin)
+    if (user.userName === 'sadmin' || user.role === RoleEnum.SuperAdmin)
       return true;
 
     // if (user && !!user.role.length) {

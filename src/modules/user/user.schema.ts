@@ -58,6 +58,6 @@ UserSchema.methods = {
     const accessToken = jwt.sign(payload, process.env.SECRET, {
       expiresIn: `${time}d`,
     });
-    return { accessToken, expiresIn: 60 * 60 * 24 * time };
+    return { accessToken, role: payload.role, expiresIn: 60 * 60 * 24 * time };
   },
 };

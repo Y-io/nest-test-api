@@ -23,6 +23,7 @@ export interface User extends BaseInterface {
 export interface JwtPayload {
   _id: Types.ObjectId;
   userName: string;
+  role: string;
 }
 
 export interface ICreateUserInput {
@@ -39,9 +40,12 @@ export interface ICreateLogin {
 export interface ITokenInfo {
   accessToken: string; // token
   expiresIn: number; // 过期时长
+  role: string; // 角色
 }
 
 export interface IFindUser extends IPagination {
-  name: string; // 真实姓名
-  roles: string[]; // 权限
+  status?: string;
+  userName?: string;
+  name?: string; // 真实姓名
+  role?: string; // 权限
 }

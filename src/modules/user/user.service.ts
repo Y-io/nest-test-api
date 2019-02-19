@@ -14,24 +14,25 @@ export class UserService extends BaseService<User> {
 
   // 新建用户
   async createAdmin(
-    username: string,
+    userName: string,
     password: string,
     role: string,
   ): Promise<User> {
-    if (!username || !password)
+    if (!userName || !password)
       throw new HttpException('账号或者密码不能为空', 406);
 
     // 防止普通用户或者未知权限注册
-    if (role === RoleEnum[role] || !Object.values(RoleEnum).includes(role))
-      throw new HttpException('该权限不存在', 401);
+    console.log(role === RoleEnum.User);
+    if (role === RoleEnum.User || !Object.values(RoleEnum).includes(role))
+      throw new HttpException('该权限不存在', 409);
 
     let user: User = await this.userModel.findOne({
-      username,
+      userName,
     });
 
     if (user) throw new HttpException('管理员已存在', 409);
 
-    user = await this.userModel.create({ username, password, role });
+    user = await this.userModel.create({ userName, password, role });
 
     await user.save();
     return user;
@@ -51,26 +52,34 @@ export class UserService extends BaseService<User> {
     if (!user || !(await user.comparePassword(password)))
       throw new HttpException('账号或者密码错误', 404);
 
-    const { _id, userName } = user;
-    return await user.createToken({ _id, userName }, 1);
+    const { _id, userName, role } = user;
+    return await user.createToken({ _id, userName, role }, 1);
   }
 
   // 根据条件查询所有用户
   async findUser(body: IFindUser): Promise<IPaginator<User>> {
-    const { pageNumber, pageSize, roles } = body;
-    const conditions = { role: { $in: roles } };
+    const { pageNumber, pageSize, role, userName, status } = body;
+
+    const conditions: { [key: string]: any } = {};
+    if (role) conditions.role = role;
+    if (userName) conditions.userName = userName;
+    if (status) conditions.status = status;
+
     const projection = {};
     const options: IPageOptions = {
       page: pageNumber,
-      offset: pageSize,
+      limit: pageSize,
     };
+    console.log('查询集合：', conditions);
     return await super.paginator(conditions, projection, options);
   }
 
   // 根据id查询用户
   async findUserById(id: string): Promise<User> {
-    if (!id) throw new HttpException('该用户不存在', 409);
+    console.log('获取的用户id', id);
+    if (!id) throw new HttpException('该用户id不存在', 409);
     const user: User = await super.findById(id);
+    console.log(user);
     if (!user) throw new HttpException('该用户不存在', 404);
 
     return user;
