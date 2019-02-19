@@ -13,6 +13,8 @@ import { HttpErrorFilter } from './core';
 import { LoggingInterceptor } from './core';
 import { CategoryModule } from './modules/category/category.module';
 import { PostModule } from './modules/post/post.module';
+import { CourseModule } from './modules/course/course.module';
+import { CourseSupplierModule } from './modules/course-supplier/course-supplier.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { PostModule } from './modules/post/post.module';
     }),
     UserModule,
     CategoryModule,
+    CourseModule,
+    CourseSupplierModule,
     PostModule,
   ],
   providers: [

@@ -8,8 +8,9 @@ import { UserService } from './user.service';
 import { AuthService } from 'src/auth/auth.service';
 import { Model } from 'mongoose';
 import { User } from './user.interface';
-import { RoleEnum } from '../base.enum';
+
 import { UserController } from './user.controller';
+import { RoleEnum } from '../base.object';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
@@ -33,6 +34,26 @@ export class UserModule implements OnModuleInit {
       });
 
       await sadmin.save();
+
+      for (let i = 0; i < 20; i++) {
+        const admin = await this.userModel.create({
+          userName: 'admin' + i,
+          password: '123456',
+          role: RoleEnum.Admin,
+        });
+
+        await admin.save();
+      }
+
+      for (let i = 0; i < 20; i++) {
+        const supplier = await this.userModel.create({
+          userName: 'supplier' + i,
+          password: '123456',
+          role: RoleEnum.Supplier,
+        });
+
+        await supplier.save();
+      }
     }
   }
 }

@@ -5,23 +5,20 @@ import {
   HttpException,
   Body,
   Request,
-  Param,
   Query,
 } from '@nestjs/common';
 import { Roles } from 'src/core';
 import { ITokenInfo, User, IFindUser } from './user.interface';
 import { UserService } from './user.service';
 import { CommonResult } from '../base.interface';
-import { Context } from '@nestjs/graphql';
-import { IPaginator } from '../base.service';
-import { RoleArr } from '../base.object';
-import { RoleEnum } from '../base.enum';
+import { RoleArr, RoleEnum } from '../base.object';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
   // 创建管理员
   @Post('createAdmin')
+  @Roles(RoleEnum.SuperAdmin)
   async createAdmin(
     @Body('userName') userName: string,
     @Body('password') password: string,
@@ -82,7 +79,9 @@ export class UserController {
     return {
       code: 200,
       message: '查询成功',
-      data: RoleArr,
+      data: RoleArr.filter((ele, idx, arr) => {
+        return ele !== 'SuperAdmin' && ele !== 'User';
+      }),
     };
   }
 }

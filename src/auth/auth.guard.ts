@@ -11,7 +11,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { ROLES_DEFINITION } from 'src/core';
 import { AuthService } from './auth.service';
 import { User } from 'src/modules/user/user.interface';
-import { RoleEnum } from 'src/modules/base.enum';
+import { RoleEnum } from 'src/modules/base.object';
 
 @Injectable()
 export class AuthGurad implements CanActivate {
@@ -43,15 +43,6 @@ export class AuthGurad implements CanActivate {
     if (user.userName === 'sadmin' || user.role === RoleEnum.SuperAdmin)
       return true;
 
-    // if (user && !!user.role.length) {
-    //   let len: number = 0;
-
-    //   user.roles.forEach(v => {
-    //     if (roles.includes(v)) len++;
-    //   });
-
-    //   return len !== 0;
-    // }
     return true;
   }
 }

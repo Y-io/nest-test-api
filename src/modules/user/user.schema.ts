@@ -3,9 +3,8 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
 import { User, JwtPayload, ITokenInfo } from './user.interface';
-import { RoleEnum, StatusEnum } from '../base.enum';
 import { schemaOptions } from '../base.schema';
-import { StatusArr, RoleArr } from '../base.object';
+import { StatusArr, RoleArr, RoleEnum, StatusEnum } from '../base.object';
 const { Schema } = mongoose;
 
 export const UserSchema = new Schema(
@@ -35,7 +34,7 @@ export const UserSchema = new Schema(
 );
 
 // 设置索引
-UserSchema.index({ userName: 1 }, { unique: true });
+UserSchema.index({ name: 1 });
 // UserSchema.index({ email: 1 });
 
 UserSchema.pre<User>('save', async function(next) {

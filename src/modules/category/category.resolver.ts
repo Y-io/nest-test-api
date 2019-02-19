@@ -3,7 +3,7 @@ import { CategoryService } from './category.service';
 
 import { Category } from './category.interface';
 import { Roles } from 'src/core';
-import { RoleEnum } from '../base.enum';
+import { RoleEnum } from '../base.object';
 
 @Resolver()
 export class CategoryResolver {

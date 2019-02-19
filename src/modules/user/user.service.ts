@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { User, ITokenInfo, ICreateLogin, IFindUser } from './user.interface';
 import { BaseService, IPaginator } from '../base.service';
 import { IPageOptions } from '../base.interface';
-import { RoleEnum } from '../base.enum';
+import { RoleEnum } from '../base.object';
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -76,10 +76,14 @@ export class UserService extends BaseService<User> {
 
   // 根据id查询用户
   async findUserById(id: string): Promise<User> {
-    console.log('获取的用户id', id);
     if (!id) throw new HttpException('该用户id不存在', 409);
-    const user: User = await super.findById(id);
-    console.log(user);
+    const db = this.userModel.findById(id);
+
+    db.select('-password');
+    db.select('-__v');
+
+    const user = await db.exec();
+
     if (!user) throw new HttpException('该用户不存在', 404);
 
     return user;

@@ -2,25 +2,27 @@ import * as mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export const CourseSchema = new Schema({
-  title: String,
+  name: String,
   signUpStartTime: Date,
   signUpEndTime: Date,
   startTime: Date,
   endTime: Date,
   status: String,
   description: String,
-  content: String,
-  authon: { type: Schema.Types.ObjectId, ref: 'User' },
+  content: [String], // 文字内容
+  contentImage: [String], // 图片内容
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   hits: Number,
   // seen_users: [ObjectId],
   recycle: Boolean,
   top: Boolean,
   // comment: [ObjectId],
   address: String,
-  people: Number,
+  minPeople: Number,
+  maxPeople: Number,
   price: Number,
-  retailPrice: Number,
+  supplierPrice: Number,
   discountPrice: Number,
-  poster: [String],
-  sex: String,
+  banner: [String],
+  sex: Number,
 });

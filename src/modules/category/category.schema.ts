@@ -10,14 +10,6 @@ export const CategorySchema = new Schema(
     parent: { type: Schema.Types.ObjectId, ref: 'Category', default: null },
     children: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
     paths: [String],
-    created: {
-      type: Date,
-      default: new Date(),
-    },
-    updated: {
-      type: Date,
-      default: new Date(),
-    },
   },
   schemaOptions,
 );

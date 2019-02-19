@@ -2,11 +2,9 @@ import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 
 import { UserService } from './user.service';
 import { User, ITokenInfo, IFindUser } from './user.interface';
-import { HttpException } from '@nestjs/common';
 import { Roles } from 'src/core';
 import { IPaginator } from '../base.service';
-import { IPageOptions } from '../base.interface';
-import { RoleEnum } from '../base.enum';
+import { RoleEnum } from '../base.object';
 
 @Resolver()
 export class UserResolver {

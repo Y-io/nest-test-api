@@ -26,7 +26,7 @@ export class AuthService {
       const decodedToken = <{ _id: string; userName: string }>(
         jwt.verify(token, process.env.SECRET)
       );
-      console.log(decodedToken);
+
       const user: User = await this.userService.findUserById(decodedToken._id);
 
       return user;
